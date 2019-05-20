@@ -1,13 +1,22 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import store, {INSTRUCTION_ADD} from '../../store'
 
 class Instructions extends Component {
   constructor(props) {
     super(props);
+    const reduxState = store.getState()
     this.state = {
-      instructions: [],
+      instructions: reduxState.instructions,
       input: ""
     };
+  }
+  componentDidMount() {
+    store.subscribe(() => {
+      this.setState({
+        instructions: store.getState().instructions
+      })
+    })
   }
   handleChange(val) {
     this.setState({
@@ -16,6 +25,7 @@ class Instructions extends Component {
   }
   addInstruction() {
     // Send data to Redux state
+    store.dispatch({type: INSTRUCTION_ADD, instruction: this.state.input})
     this.setState({
       input: ""
     });
