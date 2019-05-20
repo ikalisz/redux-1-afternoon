@@ -17,6 +17,7 @@ export const LAST_NAME = 'LAST_NAME'
 export const INGREDIENTS_ADD = 'INGREDIENTS_ADD'
 export const INSTRUCTION_ADD = 'INSTRUCTION_ADD'
 export const RECIPE_ADD = 'RECIPE_ADD'
+export const RECIPE_DELETE = 'RECIPE_DELETE'
 
 function reducer (state = initialState, action) {
     switch (action.type) {
@@ -52,6 +53,12 @@ function reducer (state = initialState, action) {
             }
         case RECIPE_ADD:
             return {
+                recipeName: '',
+                recipeCategory: '',
+                first_name: '',
+                last_name: '',
+                ingredients: [],
+                instructions: [],
                 recipes: [...state.recipes, {
                     recipeName: state.recipeName,
                     recipeCategory: state.recipeCategory,
@@ -59,7 +66,14 @@ function reducer (state = initialState, action) {
                     last_name: state.last_name,
                     ingredients: [...state.ingredients],
                     instructions: [...state.instructions]
-                }]
+                }],
+            }
+        case RECIPE_DELETE:
+            state.recipes.splice(action.index, 1)
+            let newRecipes = state.recipes.slice()
+            return {
+                ...state,
+                recipes: [...newRecipes]
             }
         default: 
             return state
